@@ -3,7 +3,7 @@ import * as io from "socket.io-client";
 
 @Injectable()
 export class SocketService {
-  private URL: string = "http://localhost:3000";
+  private URL: string = "https://multi-minesweeper.herokuapp.com/";//"http://localhost:3000";
   private socket: any = null;
 
   initSocket(): any {
