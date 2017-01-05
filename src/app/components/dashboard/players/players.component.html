@@ -1,0 +1,8 @@
+<div class="players-container">
+  <ul>
+    <li *ngFor="let player of notPlayingUsers">
+      <player [name]="player"></player>
+    </li>
+  </ul>
+  <button (click)="refresh()" class="btn btn-default refresh-btn" type="button">Refresh</button>
+</div>
