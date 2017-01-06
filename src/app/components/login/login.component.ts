@@ -8,6 +8,7 @@ import {SocketService} from "../../services/socket.service";
 })
 export class LoginComponent {
   private socket = null;
+  title: string = 'Welcome to multiplayer minesweeper';
 
   constructor(
     private socketService: SocketService) {

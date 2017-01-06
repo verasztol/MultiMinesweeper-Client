@@ -1,10 +1,15 @@
 <div class="login-container">
-  <form class="login-form" (ngSubmit)="login(userName.value)" #userForm="ngForm">
-    <div class="form-group">
-      <label for="name">Please enter your name!</label>
-      <input class=" form-control login-name" placeholder="User name"
-             #userName id="name" name="name" type="text" required>
-    </div>
-    <button class="btn btn-default login-btn" type="submit" [disabled]="!userForm.form.valid">Login</button>
-  </form>
+  <div class="login-form-container col-md-6">
+    <h1 class="game-title">
+      {{title}}
+    </h1>
+    <form class="login-form" (ngSubmit)="login(userName.value)" #userForm="ngForm">
+      <div class="form-group">
+        <label class="login-name-label" for="name">Please enter your name! *</label>
+        <input class=" form-control login-name" placeholder="User name"
+               #userName id="name" name="name" type="text" required>
+      </div>
+      <button class="btn btn-primary login-btn" type="submit" [disabled]="!userForm.form.valid">Login</button>
+    </form>
+  </div>
 </div>

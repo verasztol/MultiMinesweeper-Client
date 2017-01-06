@@ -74,8 +74,8 @@ export class NavigateComponent implements OnInit {
       me.socket.on('game.end', function(data) {
         console.log("end", data);
         let modal = me.modalService.create(AppModule, CustomModalComponent, {
-          ok: (snacks) => {
-            alert(snacks.join(', '));
+          ok: () => {
+            me.goToPlayers();
           },
           title: "End Game",
           text: "The winner is: " + data.winner
