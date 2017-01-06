@@ -1,21 +1,28 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
-import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-
+import {Modal} from "./modal.dialog.module";
+import {Component} from "@angular/core";
 @Component({
-  selector: 'modal-dialog',
+  selector: "my-custom-modal",
   templateUrl: './modal.dialog.component.html',
   styleUrls: ['./modal.dialog.component.css']
 })
-export class ModalDialogComponent implements AfterViewInit {
+@Modal()
+export class CustomModalComponent {
+  ok: Function;
+  close: Function;
+  destroy: Function;
+  closeModal: Function;
+  title: string = "";
+  text: string = "";
 
-  @ViewChild('modal')
-  modal: ModalComponent;
-
-  ngAfterViewInit(): void {
-    this.modal.open();
+  onCancel(): void{
+    this.closeModal();
+    this.destroy();
+    this.close();
   }
 
-  close(): void {
-    this.modal.close();
+  onOk(): void{
+    this.closeModal();
+    this.destroy();
+    this.ok();
   }
 }

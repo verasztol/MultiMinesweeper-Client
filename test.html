@@ -1,7 +1,7 @@
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script>
 	myName = "John" + Date.now();
-	socket = io.connect('http://localhost:3000');
+	socket = io.connect('https://multi-minesweeper.herokuapp.com');//('http://localhost:3000');
 	socket.on('connect', function(){
 		console.log("connected");
 		socket.emit('authentication', {userName: myName});
@@ -9,6 +9,9 @@
 			console.log("added", data);
 		});
 		socket.on('user.error', function(data) {
+			console.log("error", data);
+		});
+		socket.on('game.error', function(data) {
 			console.log("error", data);
 		});
 		socket.on('user.listed', function(data) {

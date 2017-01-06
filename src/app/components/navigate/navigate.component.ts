@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {SocketService} from "../../services/socket.service";
 import {UserService} from "../../services/user.service";
+import {ModalService} from "../modal-dialog/modal.dialog.module";
+import {AppModule} from "../../app.module";
+import {CustomModalComponent} from "../modal-dialog/modal.dialog.component";
 
 @Component({
   selector: 'navigate',
@@ -14,6 +17,7 @@ export class NavigateComponent implements OnInit {
   constructor(
     private router: Router,
     private socketService: SocketService,
+    private modalService: ModalService,
     private userService: UserService) {
     this.socket = this.socketService.getSocket();
   }
@@ -64,6 +68,18 @@ export class NavigateComponent implements OnInit {
         else {
           // TODO
         }
+      });
+
+
+      me.socket.on('game.end', function(data) {
+        console.log("end", data);
+        let modal = me.modalService.create(AppModule, CustomModalComponent, {
+          ok: (snacks) => {
+            alert(snacks.join(', '));
+          },
+          title: "End Game",
+          text: "The winner is: " + data.winner
+        });
       });
     }
   }
