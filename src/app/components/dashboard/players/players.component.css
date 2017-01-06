@@ -1,0 +1,16 @@
+.players-container ul{
+  list-style-type: none;
+}
+
+.players-container .refresh-btn {
+  margin-top: 15px;
+}
+
+.players-container .players-scroll {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.players-container .players-text {
+  margin-bottom: 15px;
+}

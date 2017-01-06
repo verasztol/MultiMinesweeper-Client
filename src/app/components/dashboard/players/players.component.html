@@ -1,8 +1,7 @@
 <div class="players-container">
-  <ul>
-    <li *ngFor="let player of notPlayingUsers">
-      <player [name]="player"></player>
-    </li>
-  </ul>
-  <button (click)="refresh()" class="btn btn-default refresh-btn" type="button">Refresh</button>
+  <div class="players-text">{{text}}</div>
+  <div class="players-scroll" *ngIf="notPlayingUsers.length">
+    <player [name]="player" *ngFor="let player of notPlayingUsers"></player>
+  </div>
+  <button (click)="refresh()" class="btn btn-primary refresh-btn" type="button">Refresh</button>
 </div>

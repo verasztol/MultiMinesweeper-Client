@@ -1,7 +1,10 @@
 <div class="challengers-container">
-  <div class="challenger-container" *ngFor="let challenger of challengers">
-    <span class="challenger">{{challenger}} want to play with you.</span>
-    <button (click)="accept(challenger)" class="btn btn-default accept-btn" type="button">Accept</button>
-    <button (click)="decline(challenger)" class="btn btn-default decline-btn" type="button">Decline</button>
+  <div *ngIf="!challengers.length">Currently nobody want to challenge you!</div>
+  <div class="challenger-container row" *ngFor="let challenger of challengers">
+    <span class="challenger">{{challenger}} want to play with you</span>
+    <div class="challenger-buttons">
+      <button (click)="accept(challenger)" class="btn btn-success accept-btn" type="button">Accept</button>
+      <button (click)="decline(challenger)" class="btn btn-danger decline-btn" type="button">Decline</button>
+    </div>
   </div>
 </div>

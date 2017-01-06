@@ -2,3 +2,11 @@
 body {
   background-image: url("./assets/logo.png");
 }
+
+.panel-container {
+  border: 1px solid #6e6e6e;
+  background-color: rgba(100,100,100,0.6);
+  padding: 15px;
+  border-radius: 10px;
+  color: yellow;
+}

@@ -1,0 +1,13 @@
+.challengers-container {
+  overflow: auto;
+  max-height: 584px;
+}
+
+.challengers-container .challenger-container {
+  margin: 0;
+  margin-bottom: 3px;
+}
+
+.challengers-container .challenger-container .challenger-buttons {
+  float: right;
+}
