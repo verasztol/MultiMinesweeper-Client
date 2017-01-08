@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 // Run the app by serving the static files
 // in the dist directory
@@ -8,4 +9,9 @@ app.get('/*', function(req, res) {
 });
 // Start the app by listening on the default
 // Heroku port
-app.listen(process.env.PORT || 8080);
+var port = process.env.PORT || 8080;
+app.listen(port);
+
+app.on('listening', function() {
+  console.log('Listening on ' + port);
+});

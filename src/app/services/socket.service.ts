@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as io from "socket.io-client";
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SocketService {
-  private URL: string = /*"https://multi-minesweeper.herokuapp.com/";//*/"http://localhost:3000";
+  private URL: string = environment.url;
   private socket: any = null;
 
   initSocket(): any {

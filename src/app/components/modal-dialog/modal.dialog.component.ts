@@ -1,28 +1,35 @@
-import {Modal} from "./modal.dialog.module";
-import {Component} from "@angular/core";
+import { Component } from '@angular/core';
+
+import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+
+export class CustomModalContext extends BSModalContext {
+  public title: string;
+  public text: string;
+  public cancel: Function;
+  public ok: Function;
+}
+
 @Component({
-  selector: "my-custom-modal",
+  selector: "custom-modal",
   templateUrl: './modal.dialog.component.html',
   styleUrls: ['./modal.dialog.component.css']
 })
-@Modal()
-export class CustomModalComponent {
-  ok: Function;
-  close: Function;
-  destroy: Function;
-  closeModal: Function;
-  title: string = "";
-  text: string = "";
+export class CustomModalComponent implements CloseGuard, ModalComponent<CustomModalContext> {
+  context: CustomModalContext;
 
-  onCancel(): void{
-    this.closeModal();
-    this.destroy();
-    this.close();
+  constructor(public dialog: DialogRef<CustomModalContext>) {
+    this.context = dialog.context;
+    dialog.setCloseGuard(this);
   }
 
-  onOk(): void{
-    this.closeModal();
-    this.destroy();
-    this.ok();
+  onCancel(): void {
+    this.context.cancel();
+    this.dialog.dismiss();
+  }
+
+  onOk(): void {
+    this.context.ok();
+    this.dialog.close();
   }
 }
