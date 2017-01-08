@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { ModalModule } from "./components/modal-dialog/modal.dialog.module";
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -20,7 +21,6 @@ import {FieldsComponent} from "./components/game/fields/fields.component";
 import {CustomModalComponent} from "./components/modal-dialog/modal.dialog.component";
 
 import { AppRoutingModule } from './app-routing.module';
-import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import { SocketService } from "./services/socket.service";
 import { UserService } from "./services/user.service";
@@ -47,10 +47,11 @@ import { UserService } from "./services/user.service";
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    Ng2Bs3ModalModule,
-    ModalModule
+    ModalModule.forRoot(),
+    BootstrapModalModule
   ],
   providers: [SocketService, UserService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ CustomModalComponent ]
 })
 export class AppModule { }

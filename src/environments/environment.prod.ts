@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  url: "https://multi-minesweeper.herokuapp.com/"
 };
