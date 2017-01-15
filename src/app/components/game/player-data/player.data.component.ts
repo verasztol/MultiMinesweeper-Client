@@ -30,7 +30,7 @@ export class PlayerDataComponent implements OnInit, OnChanges {
     if(!me.inited) {
       me.maxMarker = (me.game) ? me.game.maxMarker : null;
 
-      me.socket.on('game.marked', function (data) {
+      me.socket.on('game.marked', (data) => {
         if (data && data.marked && data.marked.playerName === me.name) {
           me.marker = data.markerCount || 0;
         }

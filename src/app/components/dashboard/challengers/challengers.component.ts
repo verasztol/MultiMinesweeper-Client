@@ -21,7 +21,7 @@ export class ChallengersComponent implements OnInit {
   ngOnInit(): void {
     let me = this;
 
-    me.socket.on('user.wantPlay', function(data) {
+    me.socket.on('user.wantPlay', (data) => {
       console.log("user.wantPlay", data);
       if(data && data.challengerName) {
         if(me.challengers.indexOf(data.challengerName) === -1) {

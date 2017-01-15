@@ -1,3 +1,9 @@
 <div class="player-container" (click)="select()">
-    <span class="player">{{name}}</span>
+  <span class="player">{{name}}</span>
+  <div *ngIf="waiting" id="man">
+    <div id="eye-l"></div>
+    <div id="eye-r"></div>
+    <div id="nose"></div>
+    <div id="mouth"></div>
+  </div>
 </div>
