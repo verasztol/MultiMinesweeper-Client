@@ -34,7 +34,7 @@ export class FieldComponent implements OnInit {
 
     if(me.user && me.opponent) {
 
-      let markedListener = function(data) {
+      let markedListener = (data) => {
         console.log("game.marked", data);
 
         if (data && data.marked) {
@@ -56,7 +56,7 @@ export class FieldComponent implements OnInit {
 
       me.socket.on('game.marked', markedListener);
 
-      let shootedListener = function (data) {
+      let shootedListener = (data) => {
         console.log("game.shooted", data);
 
         if (data && data.shooted) {

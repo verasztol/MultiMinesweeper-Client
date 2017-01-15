@@ -16,6 +16,7 @@ export class GameComponent implements OnInit {
   game: Game = null;
   user: User = null;
   opponent: User = null;
+  mineCount: number = null;
 
   constructor(
     private socketService: SocketService,
@@ -33,7 +34,9 @@ export class GameComponent implements OnInit {
 
     if(me.user && me.opponent && me.game && me.nextPlayerName) {
 
-      me.socket.on('game.shooted', function (data) {
+      me.mineCount = me.game.mineCount || 0;
+
+      me.socket.on('game.shooted', (data) => {
         console.log("game.shooted", data);
 
         if(data && data.nextPlayerName) {

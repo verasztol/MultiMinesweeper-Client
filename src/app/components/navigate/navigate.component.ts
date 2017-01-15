@@ -27,12 +27,12 @@ export class NavigateComponent implements OnInit {
     let me = this;
 
     if(me.socket) {
-      me.socket.on('connect', function(){
+      me.socket.on('connect', () => {
         console.log("client connected");
         me.goToLogin();
       });
 
-      me.socket.on('user.added', function(data) {
+      me.socket.on('user.added', (data) => {
         console.log("added", data);
         if(data && data.name) {
           me.userService.createUser(data.name);
@@ -43,11 +43,11 @@ export class NavigateComponent implements OnInit {
         }
       });
 
-      me.socket.on('user.declinedPlay', function(data) {
+      me.socket.on('user.declinedPlay', (data) => {
         console.log("user.declinedPlay", data);
       });
 
-      me.socket.on('user.acceptedPlay', function(data) {
+      me.socket.on('user.acceptedPlay', (data) => {
         console.log("user.acceptedPlay", data);
         if(data && data.enemyName) {
           me.userService.createOpponent(data.enemyName);
@@ -58,7 +58,7 @@ export class NavigateComponent implements OnInit {
         }
       });
 
-      me.socket.on('game.started', function(data) {
+      me.socket.on('game.started', (data) => {
         console.log("game.started", data);
 
         if(data && data.game && data.nextPlayerName) {
@@ -72,7 +72,7 @@ export class NavigateComponent implements OnInit {
       });
 
 
-      me.socket.on('game.end', function(data) {
+      me.socket.on('game.end', (data) => {
         console.log("end", data);
         return me.modal.open(CustomModalComponent,  overlayConfigFactory({
           title: "End Game",

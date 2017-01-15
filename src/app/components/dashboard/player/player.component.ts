@@ -1,4 +1,4 @@
-import {Component, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
 
 @Component({
@@ -6,9 +6,10 @@ import {SocketService} from "../../../services/socket.service";
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent {
+export class PlayerComponent implements OnInit{
 
   private socket = null;
+  waiting: boolean = false;
 
   @Input() name:string = "";
 
@@ -17,7 +18,21 @@ export class PlayerComponent {
     this.socket = this.socketService.getSocket();
   }
 
+  ngOnInit(): void {
+    let me = this;
+
+    me.socket.on('user.declinedPlay', (data) => {
+      console.log("user.declinedPlay", data);
+      if(data && data.enemyName === me.name) {
+        me.waiting = false;
+      }
+    });
+  }
+
   select(): void {
-    this.socket.emit('user.select', {userName: this.name});
+    if(!this.waiting) {
+      this.waiting = true;
+      this.socket.emit('user.select', {userName: this.name});
+    }
   }
 }
