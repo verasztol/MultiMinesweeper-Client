@@ -11,12 +11,11 @@ import {User} from "../../../../models/user";
 export class FieldComponent implements OnInit {
 
   private socket = null;
-  private isMarkedByMe: boolean = false;
-  private isShootedByMe: boolean = false;
+  private isMarked: string = null;
   private user: User = null;
   private opponent: User = null;
 
-  value: number = null;
+  value: (number | string) = null;
 
   @Input() x: number = null;
   @Input() y: number = null;
@@ -34,25 +33,30 @@ export class FieldComponent implements OnInit {
     me.opponent = me.userService.getOpponent();
 
     if(me.user && me.opponent) {
-      me.socket.on('game.marked', function (data) {
+
+      let markedListener = function(data) {
         console.log("game.marked", data);
 
-        if (data && data.marked && Array.isArray(data.marked)) {
-          let last = data.marked.length - 1;
-          let tmpMark = data.marked[last];
-          if(tmpMark && tmpMark.x == me.x && tmpMark.y == me.y) {
+        if (data && data.marked) {
+          let tmpMark = data.marked;
+          if(tmpMark.x == me.x && tmpMark.y == me.y) {
             if(tmpMark.playerName === me.user.name) {
-              me.isMarkedByMe = true;
+              me.isMarked = "../../../../../assets/blue.png";
             }
-            me.value = -2;
+            else {
+              me.isMarked = "../../../../../assets/red.png";
+            }
+            me.socket.removeListener("game.marked", markedListener);
           }
         }
         else {
           // TODO
         }
-      });
+      };
 
-      me.socket.on('game.shooted', function (data) {
+      me.socket.on('game.marked', markedListener);
+
+      let shootedListener = function (data) {
         console.log("game.shooted", data);
 
         if (data && data.shooted) {
@@ -62,10 +66,9 @@ export class FieldComponent implements OnInit {
             for(let i = 0; i < tmpShoots.length; i++) {
               let tmpShoot = tmpShoots[i];
               if(tmpShoot && tmpShoot.x == me.x && tmpShoot.y == me.y) {
-                if(tmpShoot.playerName === me.user.name) {
-                  me.isShootedByMe = true;
-                }
                 me.value = tmpShoot.value;
+                me.isMarked = null;
+                me.socket.removeListener("game.marked", shootedListener);
               }
             }
           }
@@ -76,7 +79,9 @@ export class FieldComponent implements OnInit {
         else {
           // TODO
         }
-      });
+      };
+
+      me.socket.on('game.shooted', shootedListener);
     }
     else {
       // TODO

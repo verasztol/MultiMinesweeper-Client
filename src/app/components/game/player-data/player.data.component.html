@@ -1,8 +1,8 @@
-<div class="player-data-container">
-  <span class="player-data-name">
+<div class="panel-container player-data-container">
+  <div class="player-data-name">
     {{name}}
-  </span>
-  <div *ngIf="name === actualPlayerName">
-    Your turn!
+  </div>
+  <div class="max-marker">
+    Markers: {{marker}}/{{maxMarker}}
   </div>
 </div>
