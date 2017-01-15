@@ -24,7 +24,9 @@ export class ChallengersComponent implements OnInit {
     me.socket.on('user.wantPlay', function(data) {
       console.log("user.wantPlay", data);
       if(data && data.challengerName) {
-        me.challengers.push(data.challengerName);
+        if(me.challengers.indexOf(data.challengerName) === -1) {
+          me.challengers.push(data.challengerName);
+        }
       }
       else {
         // TODO

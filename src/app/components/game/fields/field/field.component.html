@@ -1,3 +1,8 @@
 <div (contextmenu)="onFieldRightClick($event)" (click)="onFieldLeftClick()" class="field-container">
-  {{value}}
+  <div *ngIf="!isMarked">
+    {{value}}
+  </div>
+  <div *ngIf="isMarked">
+    <img class="flag" [src]="isMarked"/>
+  </div>
 </div>
