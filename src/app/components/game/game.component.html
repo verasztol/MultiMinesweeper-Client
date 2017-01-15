@@ -1,5 +1,5 @@
 <div class="row game-container">
-  <player-data class="col-md-3" [player]="user" [game]="game"></player-data>
+  <player-data class="col-md-3" [player]="user" [game]="game" [score]="userScore"></player-data>
   <div class="col-md-6">
     <div class="panel-container actual-player-container">
       <div class="col-md-6">
@@ -11,5 +11,5 @@
     </div>
     <fields [game]="game"></fields>
   </div>
-  <player-data class="col-md-3" [isOpponent]="true" [player]="opponent" [game]="game"></player-data>
+  <player-data class="col-md-3" [isOpponent]="true" [player]="opponent" [game]="game" [score]="opponentScore"></player-data>
 </div>

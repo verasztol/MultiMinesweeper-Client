@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../../models/user";
 import {Game} from "../../../models/game";
 import {SocketService} from "../../../services/socket.service";
@@ -8,9 +8,8 @@ import {SocketService} from "../../../services/socket.service";
   templateUrl: './player.data.component.html',
   styleUrls: ['./player.data.component.css']
 })
-export class PlayerDataComponent implements OnInit, OnChanges {
+export class PlayerDataComponent implements OnInit {
   private socket = null;
-  private inited: boolean = false;
 
   name: string = null;
   maxMarker: number = null;
@@ -19,6 +18,7 @@ export class PlayerDataComponent implements OnInit, OnChanges {
   @Input() player: User = null;
   @Input() game: Game = null;
   @Input() isOpponent: boolean = false;
+  @Input() score: number = 0;
 
   constructor(
     private socketService: SocketService) {
@@ -27,28 +27,17 @@ export class PlayerDataComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     let me = this;
+    this.name = (me.player) ? me.player.name : "";
 
-    if(!me.inited) {
-      me.maxMarker = (me.game) ? me.game.maxMarker : null;
+    me.maxMarker = (me.game) ? me.game.maxMarker : null;
 
-      me.socket.on('game.marked', (data) => {
-        if (data && data.marked && data.marked.playerName === me.name) {
-          me.marker = data.markerCount || 0;
-        }
-        else {
-          // TODO
-        }
-      });
-
-      me.inited = true;
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.log("changes", changes);
-    let tmpUser = changes["player"];
-    if(tmpUser && tmpUser.currentValue) {
-      this.name = tmpUser.currentValue.name;
-    }
+    me.socket.on('game.marked', (data) => {
+      if (data && data.marked && data.marked.playerName === me.name) {
+        me.marker = data.markerCount || 0;
+      }
+      else {
+        // TODO
+      }
+    });
   }
 }
