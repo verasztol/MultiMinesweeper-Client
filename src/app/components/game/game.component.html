@@ -1,9 +1,13 @@
 <div class="row game-container">
   <player-data class="col-md-3" [player]="user" [game]="game"></player-data>
-  <!--<game-data [game]="game"></game-data>-->
   <div class="col-md-6">
     <div class="panel-container actual-player-container">
-      {{nextPlayerName}}'s turn!
+      <div class="col-md-6">
+        {{nextPlayerName}}'s turn!
+      </div>
+      <div class="col-md-6">
+        Mine count: {{mineCount}}
+      </div>
     </div>
     <fields [game]="game"></fields>
   </div>

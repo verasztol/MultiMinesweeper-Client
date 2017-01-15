@@ -15,7 +15,6 @@ import { ChallengersComponent } from "./components/dashboard/challengers/challen
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { GameComponent } from "./components/game/game.component";
 import {PlayerDataComponent} from "./components/game/player-data/player.data.component";
-import {GameDataComponent} from "./components/game/game-data/game.data.component";
 import {FieldComponent} from "./components/game/fields/field/field.component";
 import {FieldsComponent} from "./components/game/fields/fields.component";
 import {CustomModalComponent} from "./components/modal-dialog/modal.dialog.component";
@@ -37,7 +36,6 @@ import { UserService } from "./services/user.service";
     DashboardComponent,
     GameComponent,
     PlayerDataComponent,
-    GameDataComponent,
     FieldComponent,
     FieldsComponent,
     CustomModalComponent
