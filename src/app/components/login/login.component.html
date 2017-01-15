@@ -6,7 +6,7 @@
     <form class="login-form" (ngSubmit)="login(userName.value)" #userForm="ngForm">
       <div class="form-group">
         <label class="login-name-label" for="name">Please enter your name! *</label>
-        <input class=" form-control login-name" placeholder="User name"
+        <input class=" form-control login-name" placeholder="User name" maxlength="25" minlength="1"
                #userName id="name" name="name" type="text" required>
       </div>
       <button class="btn btn-primary login-btn" type="submit" [disabled]="!userForm.form.valid">Login</button>

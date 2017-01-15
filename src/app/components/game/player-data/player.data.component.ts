@@ -18,6 +18,7 @@ export class PlayerDataComponent implements OnInit, OnChanges {
 
   @Input() player: User = null;
   @Input() game: Game = null;
+  @Input() isOpponent: boolean = false;
 
   constructor(
     private socketService: SocketService) {
