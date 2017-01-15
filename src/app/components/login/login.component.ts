@@ -17,7 +17,10 @@ export class LoginComponent {
 
   login(userName): void {
     let me = this;
-    console.log("login called", userName);
-    me.socket.emit('authentication', {userName: userName});
+    if(userName && userName.trim()) {
+      userName = userName.trim();
+      console.log("login called", userName);
+      me.socket.emit('authentication', {userName: userName});
+    }
   }
 }

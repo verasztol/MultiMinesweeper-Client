@@ -59,21 +59,17 @@ export class FieldComponent implements OnInit {
       let shootedListener = (data) => {
         console.log("game.shooted", data);
 
-        if (data && data.shooted) {
-          let last = data.shooted.length - 1;
-          let tmpShoots = data.shooted[last];
-          if(tmpShoots && Array.isArray(tmpShoots)) {
-            for(let i = 0; i < tmpShoots.length; i++) {
-              let tmpShoot = tmpShoots[i];
-              if(tmpShoot && tmpShoot.x == me.x && tmpShoot.y == me.y) {
-                me.value = tmpShoot.value;
-                me.isMarked = null;
-                me.socket.removeListener("game.marked", shootedListener);
-              }
+        if (data && data.shooted && Array.isArray(data.shooted)) {
+          let tmpShoots = data.shooted;
+          for(let i = 0; i < tmpShoots.length; i++) {
+            let tmpShoot = tmpShoots[i];
+            if(tmpShoot && tmpShoot.x == me.x && tmpShoot.y == me.y) {
+              me.value = tmpShoot.value;
+              me.isMarked = null;
+              me.socket.removeListener("game.marked", markedListener);
+              me.socket.removeListener("game.shooted", shootedListener);
+              return;
             }
-          }
-          else {
-            // TODO
           }
         }
         else {
