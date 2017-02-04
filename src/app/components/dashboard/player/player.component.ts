@@ -30,9 +30,7 @@ export class PlayerComponent implements OnInit{
   }
 
   select(): void {
-    if(!this.waiting) {
-      this.waiting = true;
-      this.socket.emit('user.select', {userName: this.name});
-    }
+    this.waiting = true;
+    this.socket.emit('user.select', {userName: this.name});
   }
 }
