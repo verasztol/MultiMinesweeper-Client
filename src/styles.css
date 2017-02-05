@@ -10,3 +10,14 @@ body {
   border-radius: 10px;
   color: yellow;
 }
+
+footer {
+  clear: both;
+  right: 1px;
+  bottom: 1px;
+  position: absolute;
+}
+
+footer div, footer a {
+  text-align: right;
+}

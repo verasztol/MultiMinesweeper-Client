@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./connect.waiting.component.css']
 })
 export class ConnectWaitingComponent {
-  waiting = 'Waiting to the server...';
+  waiting = 'Connection lost, connecting...';
 }
