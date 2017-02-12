@@ -22,23 +22,37 @@ export class PlayersComponent implements OnInit {
     me.socket.on('user.listed', function(data) {
       console.log("listed", data);
       me.notPlayingUsers = data;
-      if(data && data.length) {
-        me.text = "List of available player(s). Choose your opponent!";
-      }
-      else {
-        me.text = "There is no available player!";
-      }
+      me.fixText(data);
     });
 
     me.socket.on("global.user.added", function(data) {
       console.log("global.user.added", data);
       if(data && data.userName) {
         me.notPlayingUsers.push(data.userName);
-        me.text = "List of available player(s). Choose your opponent!";
+        me.fixText(me.notPlayingUsers);
+      }
+    });
+
+    me.socket.on("global.user.left", function(data) {
+      console.log("global.user.left", data);
+      if(data && data.userName) {
+        me.notPlayingUsers = me.notPlayingUsers.filter((item) => {
+          return item !== data.userName;
+        });
+        me.fixText(me.notPlayingUsers);
       }
     });
 
     me.refresh();
+  }
+
+  fixText(data) {
+    if(data && data.length) {
+      this.text = "List of available player(s). Choose your opponent!";
+    }
+    else {
+      this.text = "There is no available player!";
+    }
   }
 
   refresh(): void {

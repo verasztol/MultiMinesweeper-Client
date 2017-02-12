@@ -27,6 +27,11 @@ export class NavigateComponent implements OnInit {
     let me = this;
 
     if(me.socket) {
+      me.socket.on('connect_error', () => {
+        console.log("connect failed");
+        me.gotoServerWaiting();
+      });
+
       me.socket.on('connect', () => {
         console.log("client connected");
         me.goToLogin();
@@ -95,5 +100,9 @@ export class NavigateComponent implements OnInit {
 
   goToGame(): void {
     this.router.navigate(['/game']);
+  }
+
+  gotoServerWaiting(): void {
+    this.router.navigate(['/connect-waiting']);
   }
 }
