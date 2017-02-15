@@ -14,6 +14,8 @@ export class FieldComponent implements OnInit {
   private isMarked: string = null;
   private user: User = null;
   private opponent: User = null;
+  private timer = null;
+  private isLongClick: boolean = false;
 
   value: (number | string) = null;
 
@@ -90,8 +92,25 @@ export class FieldComponent implements OnInit {
     me.socket.emit('game.mark', {mark: {x: me.x, y: me.y}});
   }
 
-  onFieldLeftClick(): void {
+  onClick(): void {
+    if(this.timer) {
+      clearTimeout(this.timer);
+    }
+    if(!this.isLongClick) {
+      this.socket.emit('game.shot', {shot: {x: this.x, y: this.y}});
+    }
+    this.isLongClick = false;
+  }
+
+  onClickDown(): void {
     let me = this;
-    me.socket.emit('game.shot', {shot: {x: me.x, y: me.y}});
+    me.isLongClick = false;
+    if(me.timer) {
+      clearTimeout(me.timer);
+    }
+    me.timer = setTimeout(() => {
+      me.isLongClick = true;
+      me.socket.emit('game.mark', {mark: {x: me.x, y: me.y}});
+    }, 1000);
   }
 }

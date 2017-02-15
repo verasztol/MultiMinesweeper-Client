@@ -9,3 +9,9 @@
   margin-bottom: 15px;
   text-align: center;
 }
+
+@media screen and (max-width: 600px) {
+  .game-fields-container {
+    padding: 0;
+  }
+}

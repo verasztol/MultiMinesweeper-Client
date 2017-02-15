@@ -13,9 +13,9 @@ body {
 
 footer {
   clear: both;
-  right: 1px;
-  bottom: 1px;
-  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  position: fixed;
 }
 
 footer div, footer a {
