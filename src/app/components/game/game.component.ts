@@ -39,7 +39,7 @@ export class GameComponent implements OnInit {
       me.mineCount = me.game.mineCount || 0;
 
       me.socket.on('game.shooted', (data) => {
-        console.log("game.shooted", data);
+        console.log("game.components", "game.shooted", data);
 
         if(data && data.nextPlayerName) {
           if(data.nextPlayerName !== me.user.name) {

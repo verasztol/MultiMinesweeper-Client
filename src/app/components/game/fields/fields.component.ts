@@ -14,6 +14,8 @@ export class FieldsComponent implements OnInit {
   private height: number = null;
   private row: any = [];
   private col: any = [];
+  private lastShoots: any = [];
+  private lastMarked: any = null;
 
   @Input() game: Game = null;
 
@@ -23,11 +25,44 @@ export class FieldsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.game) {
-      this.width = this.game.width;
-      this.height = this.game.height;
-      this.row = Array(this.width).fill(1).map((x,i)=>i);
-      this.col = Array(this.height).fill(1).map((x,i)=>i);
+    let me = this;
+
+    if(me.game) {
+      me.width = me.game.width;
+      me.height = me.game.height;
+      me.row = Array(me.width).fill(1).map((x,i)=>i);
+      me.col = Array(me.height).fill(1).map((x,i)=>i);
     }
+
+    let markedListener = (data) => {
+      console.log("game.marked", data);
+
+      if (data && data.marked) {
+        me.lastMarked = data.marked;
+      }
+      else {
+        // TODO
+      }
+    };
+
+    let shootedListener = (data) => {
+      console.log("fields.components", "game.shooted", data);
+
+      if (data && data.shooted && Array.isArray(data.shooted)) {
+        me.lastShoots = [];
+        data.shooted.forEach((shoot) => {
+          if(!me.lastShoots[shoot.x]) {
+            me.lastShoots[shoot.x] = {};
+          }
+          me.lastShoots[shoot.x][shoot.y] = shoot;
+        });
+      }
+      else {
+        // TODO
+      }
+    };
+
+    me.socket.on('game.marked', markedListener);
+    me.socket.on('game.shooted', shootedListener);
   }
 }
