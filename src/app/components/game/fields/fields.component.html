@@ -1,7 +1,7 @@
 <div class="fields-container">
   <table class="field-table">
     <tr class="field-row" *ngFor="let x of row">
-      <td field *ngFor="let y of col" [x]="x" [y]="y"></td>
+      <td field *ngFor="let y of col" [x]="x" [y]="y" [shoot]="((lastShoots && lastShoots[x] && lastShoots[x][y])?lastShoots[x][y]:null)" [lastMarked]="((lastMarked && lastMarked.x == x && lastMarked.y == y)?lastMarked:null)"></td>
     </tr>
   </table>
 </div>
