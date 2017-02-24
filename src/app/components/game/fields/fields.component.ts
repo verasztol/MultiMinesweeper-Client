@@ -62,7 +62,32 @@ export class FieldsComponent implements OnInit {
       }
     };
 
+    let endListener = (data) => {
+      console.log("game.end", data);
+
+      if (data && data.fields && Array.isArray(data.fields)) {
+        me.lastShoots = [];
+        data.fields.forEach((fieldRow, i) => {
+          if(!me.lastShoots[i]) {
+            me.lastShoots[i] = [];
+          }
+          fieldRow.forEach((fieldCol, j) => {
+            if(!me.lastShoots[i][j]) {
+              me.lastShoots[i][j] = {};
+            }
+            me.lastShoots[i][j].value = fieldCol;
+            me.lastShoots[i][j].x = i;
+            me.lastShoots[i][j].y = j;
+          });
+        });
+      }
+      else {
+        // TODO
+      }
+    };
+
     me.socket.on('game.marked', markedListener);
     me.socket.on('game.shooted', shootedListener);
+    me.socket.on('game.end', endListener);
   }
 }
