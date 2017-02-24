@@ -25,7 +25,7 @@
     "@angular/router": "^3.3.1",
     "@types/socket.io-client": "^1.4.29",
     "angular-cli": "1.0.0-beta.24",
-    "angular2-modal": "https://github.com/davidloiret/angular2-modal/tarball/release",
+    "angular2-modal": "^2.0.3",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
     "express": "^4.14.0",
