@@ -92,11 +92,11 @@ export class NavigateComponent implements OnInit {
       };
 
       me.socket.addSingleListener('connect_error', errorListener);
-      me.socket.on('connect', connectListener);
+      me.socket.addMultipleListener('connect', connectListener, "connectListenerFromNavigate");
       me.socket.addSingleListener('user.added', userAddedListener);
       me.socket.addSingleListener('user.acceptedPlay', acceptedPLayListener);
       me.socket.addSingleListener('game.started', gameStartedListener);
-      me.socket.on('game.end', gameEndListener);
+      me.socket.addMultipleListener('game.end', gameEndListener, "gameEndListenerFromNavigate");
     }
   }
 

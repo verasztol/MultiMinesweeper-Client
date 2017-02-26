@@ -41,7 +41,7 @@ export class GameComponent implements OnInit {
 
       me.mineCount = me.game.mineCount || 0;
 
-      me.socket.on('game.shooted', (data) => {
+      let gameShootedListener = (data) => {
         console.log("game.components", "game.shooted", data);
 
         if(data && data.nextPlayerName) {
@@ -56,11 +56,14 @@ export class GameComponent implements OnInit {
         else {
           // TODO
         }
-      });
+      };
 
-      me.socket.on("game.end", (data) => {
+      let gameEndListener = (data) => {
         me.isEnded = true;
-      });
+      };
+
+      me.socket.addMultipleListener('game.shooted', gameShootedListener, "gameShootedListenerFromGame");
+      me.socket.addMultipleListener("game.end", gameEndListener, "gameEndListenerFromGame");
     }
     else {
       // TODO

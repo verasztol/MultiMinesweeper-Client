@@ -31,13 +31,15 @@ export class PlayerDataComponent implements OnInit {
 
     me.maxMarker = (me.game) ? me.game.maxMarker : null;
 
-    me.socket.on('game.marked', (data) => {
+    let gameMarkedListener = (data) => {
       if (data && data.marked && data.marked.playerName === me.name) {
         me.marker = data.markerCount || 0;
       }
       else {
         // TODO
       }
-    });
+    };
+
+    me.socket.addMultipleListener('game.marked', gameMarkedListener, "gameMarkedListenerFromPlayerData");
   }
 }

@@ -86,8 +86,10 @@ export class FieldsComponent implements OnInit {
       }
     };
 
-    me.socket.on('game.marked', markedListener);
-    me.socket.on('game.shooted', shootedListener);
-    me.socket.on('game.end', endListener);
+    me.socket.addMultipleListener('game.marked', markedListener, "gameMarkedListenerFromFields");
+    me.socket.addMultipleListener('game.shooted', shootedListener, "gameShootedListenerFromFields");
+    me.socket.addMultipleListener('game.end', endListener, "gameEndListenerFromFields");
+
+    console.log(me.socket);
   }
 }

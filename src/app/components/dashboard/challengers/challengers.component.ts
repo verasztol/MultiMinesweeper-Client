@@ -21,7 +21,7 @@ export class ChallengersComponent implements OnInit {
   ngOnInit(): void {
     let me = this;
 
-    me.socket.addSingleListener('user.wantPlay', (data) => {
+    let userWantPlayListener = (data) => {
       console.log("user.wantPlay", data);
       if(data && data.challengerName) {
         if(me.challengers.indexOf(data.challengerName) === -1) {
@@ -31,7 +31,9 @@ export class ChallengersComponent implements OnInit {
       else {
         // TODO
       }
-    });
+    };
+
+    me.socket.addSingleListener('user.wantPlay', userWantPlayListener);
   }
 
   accept(challenger): void {

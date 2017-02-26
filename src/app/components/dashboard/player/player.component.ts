@@ -21,12 +21,14 @@ export class PlayerComponent implements OnInit{
   ngOnInit(): void {
     let me = this;
 
-    me.socket.addSingleListener('user.declinedPlay', (data) => {
+    let userDeclinedListener = (data) => {
       console.log("user.declinedPlay", data);
       if(data && data.enemyName === me.name) {
         me.waiting = false;
       }
-    });
+    };
+
+    me.socket.addSingleListener('user.declinedPlay', userDeclinedListener);
   }
 
   select(): void {
