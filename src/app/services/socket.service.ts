@@ -21,7 +21,7 @@ export class SocketService {
       if(me.socket.hasListeners(listenerName)) {
         console.log(me.socket);
         let callbacks = me.socket._callbacks;
-        let listeners = callbacks[listenerName];
+        let listeners = callbacks[listenerName] || callbacks["$" + listenerName] || [];
         listeners.forEach((listener) => {
           if(listener.name === newListener.name && listener.id === listenerId) {
             me.socket.removeListener(listenerName, listener);
