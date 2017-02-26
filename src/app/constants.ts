@@ -35,8 +35,14 @@ const PAGES = {
   connectWaiting: "/connect-waiting"
 };
 
+const GAME_END_TYPES = {
+  bombFound: "bombFound",
+  userLeft: "userLeft"
+};
+
 export let Constants = {
   BOMB: BOMB,
   EVENTS: EVENTS,
-  PAGES: PAGES
+  PAGES: PAGES,
+  GAME_END_TYPES: GAME_END_TYPES
 };

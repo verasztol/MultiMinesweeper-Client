@@ -1,0 +1,13 @@
+.error-handler-container {
+  position: fixed;
+  top: 40%;
+  z-index: 5;
+  width: 100%;
+  background-color: rgba(100, 100, 100, 0.9);
+}
+
+.error-handler-container .error-handler-content {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}

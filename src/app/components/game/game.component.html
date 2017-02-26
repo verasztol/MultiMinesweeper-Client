@@ -2,7 +2,7 @@
   <player-data class="col-md-3" [player]="user" [game]="game" [score]="userScore"></player-data>
   <div class="game-fields-container col-md-6">
     <div class="panel-container actual-player-container">
-      <div [ngClass]="{'col-md-4': isEnded, 'col-md-6': !isEnded}">
+      <div [ngClass]="{'col-md-4': isEnded, 'col-md-6': !isEnded, 'player-change': isPlayerChange}">
         {{nextPlayerName}}'s turn!
       </div>
       <div [ngClass]="{'col-md-4': isEnded, 'not-show': !isEnded}">

@@ -87,9 +87,13 @@ export class FieldComponent implements OnInit, OnChanges {
   onFieldRightClick(event): void {
     let me = this;
     event.preventDefault();
-    if(me.userService.getOpponent()) {
+    if(this.timer) {
+      clearTimeout(this.timer);
+    }
+    if(!this.isLongClick && me.userService.getOpponent()) {
       me.socket.emit(Constants.EVENTS.gameMark, {mark: {x: me.x, y: me.y}});
     }
+    this.isLongClick = false;
   }
 
   onClick(): void {

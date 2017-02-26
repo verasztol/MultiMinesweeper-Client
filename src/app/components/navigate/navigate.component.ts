@@ -78,8 +78,9 @@ export class NavigateComponent implements OnInit {
         console.log("end", data);
         me.userService.resetOpponent();
         console.log("reset", me.userService.getOpponent());
+        let title = (data.type === Constants.GAME_END_TYPES.userLeft) ? "Your opponent left" : "End game";
         me.modal.open(CustomModalComponent,  overlayConfigFactory({
-          title: "End Game",
+          title: title,
           text: "The winner is: " + data.winner,
           cancelBtnText: "Back to the field",
           okBtnText: "New game",

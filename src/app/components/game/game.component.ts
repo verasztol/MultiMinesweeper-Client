@@ -14,6 +14,8 @@ import {Constants} from "../../constants";
 export class GameComponent implements OnInit {
 
   private socket = null;
+  private timer = null;
+  private isPlayerChange: boolean = false;
   nextPlayerName: string = null;
   game: Game = null;
   user: User = null;
@@ -77,7 +79,16 @@ export class GameComponent implements OnInit {
   }
 
   changeNextPlayer(name): void {
-    this.nextPlayerName = name;
+    let me  = this;
+    me.nextPlayerName = name;
+    me.isPlayerChange = true;
+
+    if(me.timer) {
+      clearTimeout(this.timer);
+    }
+    me.timer = setTimeout(() => {
+      me.isPlayerChange = false;
+    }, 1000);
   }
 
   goToPlayers(): void {
