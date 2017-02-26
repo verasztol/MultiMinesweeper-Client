@@ -19,6 +19,7 @@ export class SocketService {
     };
     me.socket.__proto__.addMultipleListener = (listenerName: string, newListener: any, listenerId: string) => {
       if(me.socket.hasListeners(listenerName)) {
+        console.log(me.socket);
         let callbacks = me.socket._callbacks;
         let listeners = callbacks[listenerName];
         listeners.forEach((listener) => {
