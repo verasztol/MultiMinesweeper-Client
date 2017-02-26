@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
+import {Constants} from "../../../constants";
 
 @Component({
   selector: 'players',
@@ -30,7 +31,7 @@ export class PlayersComponent implements OnInit {
       };
 
       let globalUserAddedListener = (data) => {
-        console.log("global.user.added", data);
+        console.log("global user added", data);
         if (data && data.userName) {
           me.notPlayingUsers.push(data.userName);
           me.fixText(me.notPlayingUsers);
@@ -38,7 +39,7 @@ export class PlayersComponent implements OnInit {
       };
 
       let userLeft = (data) => {
-        console.log("global.user.left", data);
+        console.log("global user left", data);
         if (data && data.userName) {
           me.notPlayingUsers = me.notPlayingUsers.filter((item) => {
             return item !== data.userName;
@@ -47,9 +48,9 @@ export class PlayersComponent implements OnInit {
         }
       };
 
-      me.socket.addSingleListener('user.listed', userListedListener);
-      me.socket.addSingleListener("global.user.added", globalUserAddedListener);
-      me.socket.addSingleListener("global.user.left", userLeft);
+      me.socket.addSingleListener(Constants.EVENTS.userListed, userListedListener);
+      me.socket.addSingleListener(Constants.EVENTS.globalUserAdded, globalUserAddedListener);
+      me.socket.addSingleListener(Constants.EVENTS.globalUserLeft, userLeft);
 
       me.refresh();
     }
@@ -65,6 +66,6 @@ export class PlayersComponent implements OnInit {
   }
 
   refresh(): void {
-    this.socket.emit('user.list');
+    this.socket.emit(Constants.EVENTS.userList);
   }
 }

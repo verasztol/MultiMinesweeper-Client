@@ -5,6 +5,7 @@ import {UserService} from "../../services/user.service";
 import {CustomModalComponent} from "../modal-dialog/modal.dialog.component";
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { overlayConfigFactory } from 'angular2-modal';
+import {Constants} from '../../constants';
 
 @Component({
   selector: 'navigate',
@@ -50,10 +51,10 @@ export class NavigateComponent implements OnInit {
       };
 
       let acceptedPLayListener = (data) => {
-        console.log("user.acceptedPlay", data);
+        console.log(Constants.EVENTS.userAcceptedPlay, data);
         if(data && data.enemyName) {
           me.userService.createOpponent(data.enemyName);
-          me.socket.emit("game.start");
+          me.socket.emit(Constants.EVENTS.gameStart);
         }
         else {
           // TODO
@@ -61,7 +62,7 @@ export class NavigateComponent implements OnInit {
       };
 
       let gameStartedListener = (data) => {
-        console.log("game.started", data);
+        console.log("game started", data);
 
         if(data && data.game && data.nextPlayerName) {
           me.userService.createGame(data.game.width, data.game.height, data.game.mineCount, data.game.maxMarker);
@@ -91,29 +92,29 @@ export class NavigateComponent implements OnInit {
         }, BSModalContext));
       };
 
-      me.socket.addSingleListener('connect_error', errorListener);
-      me.socket.addMultipleListener('connect', connectListener, "connectListenerFromNavigate");
-      me.socket.addSingleListener('user.added', userAddedListener);
-      me.socket.addSingleListener('user.acceptedPlay', acceptedPLayListener);
-      me.socket.addSingleListener('game.started', gameStartedListener);
-      me.socket.addMultipleListener('game.end', gameEndListener, "gameEndListenerFromNavigate");
+      me.socket.addSingleListener(Constants.EVENTS.connectError, errorListener);
+      me.socket.addMultipleListener(Constants.EVENTS.connect, connectListener, "connectListenerFromNavigate");
+      me.socket.addSingleListener(Constants.EVENTS.userAdded, userAddedListener);
+      me.socket.addSingleListener(Constants.EVENTS.userAcceptedPlay, acceptedPLayListener);
+      me.socket.addSingleListener(Constants.EVENTS.gameStarted, gameStartedListener);
+      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, gameEndListener, "gameEndListenerFromNavigate");
     }
   }
 
   goToLogin(): void {
     this.userService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate([Constants.PAGES.login]);
   }
 
   goToPlayers(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate([Constants.PAGES.dashboard]);
   }
 
   goToGame(): void {
-    this.router.navigate(['/game']);
+    this.router.navigate([Constants.PAGES.game]);
   }
 
   gotoServerWaiting(): void {
-    this.router.navigate(['/connect-waiting']);
+    this.router.navigate([Constants.PAGES.connectWaiting]);
   }
 }

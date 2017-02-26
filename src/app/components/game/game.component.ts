@@ -4,6 +4,7 @@ import {UserService} from "../../services/user.service";
 import {Game} from "../../models/game";
 import {User} from "../../models/user";
 import {Router} from "@angular/router";
+import {Constants} from "../../constants";
 
 @Component({
   selector: 'game',
@@ -42,7 +43,7 @@ export class GameComponent implements OnInit {
       me.mineCount = me.game.mineCount || 0;
 
       let gameShootedListener = (data) => {
-        console.log("game.components", "game.shooted", data);
+        console.log("game components", "game shooted", data);
 
         if(data && data.nextPlayerName) {
           if(data.nextPlayerName !== me.user.name) {
@@ -62,8 +63,8 @@ export class GameComponent implements OnInit {
         me.isEnded = true;
       };
 
-      me.socket.addMultipleListener('game.shooted', gameShootedListener, "gameShootedListenerFromGame");
-      me.socket.addMultipleListener("game.end", gameEndListener, "gameEndListenerFromGame");
+      me.socket.addMultipleListener(Constants.EVENTS.gameShooted, gameShootedListener, "gameShootedListenerFromGame");
+      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, gameEndListener, "gameEndListenerFromGame");
     }
     else {
       // TODO
@@ -80,6 +81,6 @@ export class GameComponent implements OnInit {
   }
 
   goToPlayers(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate([Constants.PAGES.dashboard]);
   }
 }

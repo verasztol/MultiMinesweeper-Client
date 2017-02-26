@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
+import {Constants} from "../../../constants";
 
 @Component({
   selector: 'player',
@@ -22,17 +23,17 @@ export class PlayerComponent implements OnInit{
     let me = this;
 
     let userDeclinedListener = (data) => {
-      console.log("user.declinedPlay", data);
+      console.log("user declinedPlay", data);
       if(data && data.enemyName === me.name) {
         me.waiting = false;
       }
     };
 
-    me.socket.addSingleListener('user.declinedPlay', userDeclinedListener);
+    me.socket.addSingleListener(Constants.EVENTS.userDeclinedPlay, userDeclinedListener);
   }
 
   select(): void {
     this.waiting = true;
-    this.socket.emit('user.select', {userName: this.name});
+    this.socket.emit(Constants.EVENTS.userSelect, {userName: this.name});
   }
 }

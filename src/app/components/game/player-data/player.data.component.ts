@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../../models/user";
 import {Game} from "../../../models/game";
 import {SocketService} from "../../../services/socket.service";
+import {Constants} from "../../../constants";
 
 @Component({
   selector: 'player-data',
@@ -40,6 +41,6 @@ export class PlayerDataComponent implements OnInit {
       }
     };
 
-    me.socket.addMultipleListener('game.marked', gameMarkedListener, "gameMarkedListenerFromPlayerData");
+    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, gameMarkedListener, "gameMarkedListenerFromPlayerData");
   }
 }
