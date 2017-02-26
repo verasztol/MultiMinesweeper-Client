@@ -3,6 +3,8 @@ import {SocketService} from "../../services/socket.service";
 import {UserService} from "../../services/user.service";
 import {Game} from "../../models/game";
 import {User} from "../../models/user";
+import {Router} from "@angular/router";
+import {Constants} from "../../constants";
 
 @Component({
   selector: 'game',
@@ -12,6 +14,8 @@ import {User} from "../../models/user";
 export class GameComponent implements OnInit {
 
   private socket = null;
+  private timer = null;
+  private isPlayerChange: boolean = false;
   nextPlayerName: string = null;
   game: Game = null;
   user: User = null;
@@ -19,8 +23,10 @@ export class GameComponent implements OnInit {
   mineCount: number = null;
   userScore: number = 0;
   opponentScore: number = 0;
+  isEnded: boolean = false;
 
   constructor(
+    private router: Router,
     private socketService: SocketService,
     private userService: UserService) {
     this.socket = this.socketService.getSocket();
@@ -38,8 +44,8 @@ export class GameComponent implements OnInit {
 
       me.mineCount = me.game.mineCount || 0;
 
-      me.socket.on('game.shooted', (data) => {
-        console.log("game.components", "game.shooted", data);
+      let gameShootedListener = (data) => {
+        console.log("game components", "game shooted", data);
 
         if(data && data.nextPlayerName) {
           if(data.nextPlayerName !== me.user.name) {
@@ -53,14 +59,39 @@ export class GameComponent implements OnInit {
         else {
           // TODO
         }
-      });
+      };
+
+      let gameEndListener = (data) => {
+        me.isEnded = true;
+      };
+
+      me.socket.addMultipleListener(Constants.EVENTS.gameShooted, gameShootedListener, "gameShootedListenerFromGame");
+      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, gameEndListener, "gameEndListenerFromGame");
     }
     else {
       // TODO
     }
   }
 
+  canDeactivate(): Promise<boolean> | boolean {
+    console.log("canDeactivate", !this.userService.getOpponent());
+    return !this.userService.getOpponent();
+  }
+
   changeNextPlayer(name): void {
-    this.nextPlayerName = name;
+    let me  = this;
+    me.nextPlayerName = name;
+    me.isPlayerChange = true;
+
+    if(me.timer) {
+      clearTimeout(this.timer);
+    }
+    me.timer = setTimeout(() => {
+      me.isPlayerChange = false;
+    }, 1000);
+  }
+
+  goToPlayers(): void {
+    this.router.navigate([Constants.PAGES.dashboard]);
   }
 }

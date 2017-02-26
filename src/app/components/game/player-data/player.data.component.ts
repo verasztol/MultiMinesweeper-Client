@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../../models/user";
 import {Game} from "../../../models/game";
 import {SocketService} from "../../../services/socket.service";
+import {Constants} from "../../../constants";
 
 @Component({
   selector: 'player-data',
@@ -31,13 +32,15 @@ export class PlayerDataComponent implements OnInit {
 
     me.maxMarker = (me.game) ? me.game.maxMarker : null;
 
-    me.socket.on('game.marked', (data) => {
+    let gameMarkedListener = (data) => {
       if (data && data.marked && data.marked.playerName === me.name) {
         me.marker = data.markerCount || 0;
       }
       else {
         // TODO
       }
-    });
+    };
+
+    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, gameMarkedListener, "gameMarkedListenerFromPlayerData");
   }
 }

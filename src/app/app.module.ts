@@ -18,6 +18,7 @@ import {PlayerDataComponent} from "./components/game/player-data/player.data.com
 import {FieldComponent} from "./components/game/fields/field/field.component";
 import {FieldsComponent} from "./components/game/fields/fields.component";
 import {CustomModalComponent} from "./components/modal-dialog/modal.dialog.component";
+import {ErrorHandlerComponent} from "./components/error-handler/error.handler.component";
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -38,7 +39,8 @@ import { UserService } from "./services/user.service";
     PlayerDataComponent,
     FieldComponent,
     FieldsComponent,
-    CustomModalComponent
+    CustomModalComponent,
+    ErrorHandlerComponent
   ],
   imports: [
     BrowserModule,

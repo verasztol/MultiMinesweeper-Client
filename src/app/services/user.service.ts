@@ -40,4 +40,13 @@ export class UserService {
   getStarterPlayerName(): string {
     return this.starterPlayerName;
   }
+
+  logout(): void {
+    this.user = null;
+    this.opponent = null;
+  }
+
+  resetOpponent(): void {
+    this.opponent = null;
+  }
 }

@@ -1,6 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
 import {Game} from "../../../models/game";
+import {Constants} from "../../../constants";
 
 @Component({
   selector: 'fields',
@@ -35,7 +36,7 @@ export class FieldsComponent implements OnInit {
     }
 
     let markedListener = (data) => {
-      console.log("game.marked", data);
+      console.log("game marked", data);
 
       if (data && data.marked) {
         me.lastMarked = data.marked;
@@ -46,7 +47,7 @@ export class FieldsComponent implements OnInit {
     };
 
     let shootedListener = (data) => {
-      console.log("fields.components", "game.shooted", data);
+      console.log("fields components", "game shooted", data);
 
       if (data && data.shooted && Array.isArray(data.shooted)) {
         me.lastShoots = [];
@@ -63,7 +64,7 @@ export class FieldsComponent implements OnInit {
     };
 
     let endListener = (data) => {
-      console.log("game.end", data);
+      console.log("game end", data);
 
       if (data && data.fields && Array.isArray(data.fields)) {
         me.lastShoots = [];
@@ -86,8 +87,8 @@ export class FieldsComponent implements OnInit {
       }
     };
 
-    me.socket.on('game.marked', markedListener);
-    me.socket.on('game.shooted', shootedListener);
-    me.socket.on('game.end', endListener);
+    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, markedListener, "gameMarkedListenerFromFields");
+    me.socket.addMultipleListener(Constants.EVENTS.gameShooted, shootedListener, "gameShootedListenerFromFields");
+    me.socket.addMultipleListener(Constants.EVENTS.gameEnd, endListener, "gameEndListenerFromFields");
   }
 }

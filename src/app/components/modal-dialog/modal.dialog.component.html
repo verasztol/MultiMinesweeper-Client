@@ -1,22 +1,18 @@
-<!--<div class="modal-container modal">-->
-  <!--<div class="modal-dialog" role="document">-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">
-          {{context.title}}
-        </h4>
-      </div>
-      <div class="modal-body">
-        {{context.text}}
-      </div>
-      <div class="modal-footer modal-buttons">
-        <button class="btn btn-default" (click)="onCancel()" *ngIf="context.cancel">
-          <span>Cancel</span>
-        </button>
-        <button class="btn btn-primary" (click)="onOk()" *ngIf="context.ok">
-          <span>Ok</span>
-        </button>
-      </div>
-    </div>
-  <!--</div>-->
-<!--</div>-->
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      {{context.title}}
+    </h4>
+  </div>
+  <div class="modal-body">
+    {{context.text}}
+  </div>
+  <div class="modal-footer modal-buttons">
+    <button class="btn btn-default" (click)="onCancel()" *ngIf="context.cancel">
+      <span>{{cancelBtnText}}</span>
+    </button>
+    <button class="btn btn-primary" (click)="onOk()" *ngIf="context.ok">
+      <span>{{okBtnText}}</span>
+    </button>
+  </div>
+</div>

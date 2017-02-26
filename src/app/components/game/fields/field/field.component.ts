@@ -2,13 +2,14 @@ import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core'
 import {SocketService} from "../../../../services/socket.service";
 import {UserService} from "../../../../services/user.service";
 import {User} from "../../../../models/user";
+import {Constants} from "../../../../constants";
 
 @Component({
   selector: '[field]',
   templateUrl: './field.component.html',
   styleUrls: ['./field.component.css']
 })
-export class FieldComponent implements OnInit {
+export class FieldComponent implements OnInit, OnChanges {
 
   private socket = null;
   private isMarked: string = null;
@@ -60,8 +61,12 @@ export class FieldComponent implements OnInit {
     let me = this;
     console.log("handleShoot", data, "x: " + me.x, "y: " + me.y);
     if(data && data.x == me.x && data.y == me.y) {
-      me.value = data.value;
-      me.isMarked = null;
+      if(data.value >= 0) {
+        me.value = data.value;
+        me.isMarked = null;
+      }else {
+        me.isMarked = "../../../../../assets/logo_orig.png";
+      }
       me.hasAction = true;
     }
     else {
@@ -82,15 +87,21 @@ export class FieldComponent implements OnInit {
   onFieldRightClick(event): void {
     let me = this;
     event.preventDefault();
-    me.socket.emit('game.mark', {mark: {x: me.x, y: me.y}});
+    if(this.timer) {
+      clearTimeout(this.timer);
+    }
+    if(!this.isLongClick && me.userService.getOpponent()) {
+      me.socket.emit(Constants.EVENTS.gameMark, {mark: {x: me.x, y: me.y}});
+    }
+    this.isLongClick = false;
   }
 
   onClick(): void {
     if(this.timer) {
       clearTimeout(this.timer);
     }
-    if(!this.isLongClick) {
-      this.socket.emit('game.shot', {shot: {x: this.x, y: this.y}});
+    if(!this.isLongClick && this.userService.getOpponent()) {
+      this.socket.emit(Constants.EVENTS.gameShot, {shot: {x: this.x, y: this.y}});
     }
     this.isLongClick = false;
   }
@@ -103,7 +114,9 @@ export class FieldComponent implements OnInit {
     }
     me.timer = setTimeout(() => {
       me.isLongClick = true;
-      me.socket.emit('game.mark', {mark: {x: me.x, y: me.y}});
+      if(me.userService.getOpponent()) {
+        me.socket.emit(Constants.EVENTS.gameMark, {mark: {x: me.x, y: me.y}});
+      }
     }, 1000);
   }
 }

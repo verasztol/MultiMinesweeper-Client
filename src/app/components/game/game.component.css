@@ -10,6 +10,34 @@
   text-align: center;
 }
 
+.game-container .not-show {
+  display: none;
+}
+
+.player-change {
+  font-weight: bold;
+  -webkit-animation:animatezoom 1s;
+  animation:animatezoom 1s
+}
+
+@keyframes animatezoom {
+  from {
+    transform:scale(1)
+  }
+  to {
+    transform:scale(1.1)
+  }
+}
+
+@-webkit-keyframes animatezoom {
+  from {
+    -webkit-transform:scale(1)
+  }
+  to {
+    -webkit-transform:scale(1.1)
+  }
+}
+
 @media screen and (max-width: 600px) {
   .game-fields-container {
     padding: 0;
