@@ -60,8 +60,12 @@ export class FieldComponent implements OnInit {
     let me = this;
     console.log("handleShoot", data, "x: " + me.x, "y: " + me.y);
     if(data && data.x == me.x && data.y == me.y) {
-      me.value = data.value;
-      me.isMarked = null;
+      if(data.value >= 0) {
+        me.value = data.value;
+        me.isMarked = null;
+      }else {
+        me.isMarked = "../../../../../assets/logo_orig.png";
+      }
       me.hasAction = true;
     }
     else {
@@ -82,14 +86,16 @@ export class FieldComponent implements OnInit {
   onFieldRightClick(event): void {
     let me = this;
     event.preventDefault();
-    me.socket.emit('game.mark', {mark: {x: me.x, y: me.y}});
+    if(me.userService.getOpponent()) {
+      me.socket.emit('game.mark', {mark: {x: me.x, y: me.y}});
+    }
   }
 
   onClick(): void {
     if(this.timer) {
       clearTimeout(this.timer);
     }
-    if(!this.isLongClick) {
+    if(!this.isLongClick && this.userService.getOpponent()) {
       this.socket.emit('game.shot', {shot: {x: this.x, y: this.y}});
     }
     this.isLongClick = false;
@@ -103,7 +109,9 @@ export class FieldComponent implements OnInit {
     }
     me.timer = setTimeout(() => {
       me.isLongClick = true;
-      me.socket.emit('game.mark', {mark: {x: me.x, y: me.y}});
+      if(me.userService.getOpponent()) {
+        me.socket.emit('game.mark', {mark: {x: me.x, y: me.y}});
+      }
     }, 1000);
   }
 }

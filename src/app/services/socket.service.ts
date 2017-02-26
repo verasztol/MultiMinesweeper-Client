@@ -8,7 +8,14 @@ export class SocketService {
   private socket: any = null;
 
   initSocket(): any {
-    this.socket = io.connect(this.URL);
+    let me = this;
+    me.socket = io.connect(me.URL);
+    me.socket.__proto__.addSingleListener = (listenerName, listener) => {
+      if(me.socket.hasListeners(listenerName)) {
+        me.socket.removeListener(listenerName);
+      }
+      me.socket.on(listenerName, listener);
+    };
   }
 
   getSocket(): any {

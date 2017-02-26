@@ -3,6 +3,7 @@ import {SocketService} from "../../services/socket.service";
 import {UserService} from "../../services/user.service";
 import {Game} from "../../models/game";
 import {User} from "../../models/user";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'game',
@@ -19,8 +20,10 @@ export class GameComponent implements OnInit {
   mineCount: number = null;
   userScore: number = 0;
   opponentScore: number = 0;
+  isEnded: boolean = false;
 
   constructor(
+    private router: Router,
     private socketService: SocketService,
     private userService: UserService) {
     this.socket = this.socketService.getSocket();
@@ -54,13 +57,26 @@ export class GameComponent implements OnInit {
           // TODO
         }
       });
+
+      me.socket.on("game.end", (data) => {
+        me.isEnded = true;
+      });
     }
     else {
       // TODO
     }
   }
 
+  canDeactivate(): Promise<boolean> | boolean {
+    console.log("canDeactivate", !this.userService.getOpponent());
+    return !this.userService.getOpponent();
+  }
+
   changeNextPlayer(name): void {
     this.nextPlayerName = name;
+  }
+
+  goToPlayers(): void {
+    this.router.navigate(['/dashboard']);
   }
 }

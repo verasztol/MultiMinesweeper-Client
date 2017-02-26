@@ -21,7 +21,7 @@ export class PlayerComponent implements OnInit{
   ngOnInit(): void {
     let me = this;
 
-    me.socket.on('user.declinedPlay', (data) => {
+    me.socket.addSingleListener('user.declinedPlay', (data) => {
       console.log("user.declinedPlay", data);
       if(data && data.enemyName === me.name) {
         me.waiting = false;

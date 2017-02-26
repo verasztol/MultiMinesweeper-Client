@@ -18,35 +18,44 @@ export class PlayersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("PlayersComponent init");
     let me = this;
-    me.socket.on('user.listed', function(data) {
-      console.log("listed", data);
-      me.notPlayingUsers = data;
-      me.fixText(data);
-    });
 
-    me.socket.on("global.user.added", function(data) {
-      console.log("global.user.added", data);
-      if(data && data.userName) {
-        me.notPlayingUsers.push(data.userName);
-        me.fixText(me.notPlayingUsers);
-      }
-    });
+    if(me.socket) {
 
-    me.socket.on("global.user.left", function(data) {
-      console.log("global.user.left", data);
-      if(data && data.userName) {
-        me.notPlayingUsers = me.notPlayingUsers.filter((item) => {
-          return item !== data.userName;
-        });
-        me.fixText(me.notPlayingUsers);
-      }
-    });
+      let userListedListener = (data) => {
+        console.log("listed", data);
+        me.notPlayingUsers = data;
+        me.fixText(data);
+      };
 
-    me.refresh();
+      let globalUserAddedListener = (data) => {
+        console.log("global.user.added", data);
+        if (data && data.userName) {
+          me.notPlayingUsers.push(data.userName);
+          me.fixText(me.notPlayingUsers);
+        }
+      };
+
+      let userLeft = (data) => {
+        console.log("global.user.left", data);
+        if (data && data.userName) {
+          me.notPlayingUsers = me.notPlayingUsers.filter((item) => {
+            return item !== data.userName;
+          });
+          me.fixText(me.notPlayingUsers);
+        }
+      };
+
+      me.socket.addSingleListener('user.listed', userListedListener);
+      me.socket.addSingleListener("global.user.added", globalUserAddedListener);
+      me.socket.addSingleListener("global.user.left", userLeft);
+
+      me.refresh();
+    }
   }
 
-  fixText(data) {
+  fixText(data): void {
     if(data && data.length) {
       this.text = "List of available player(s). Choose your opponent!";
     }

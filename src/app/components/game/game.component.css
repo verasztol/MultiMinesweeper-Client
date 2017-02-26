@@ -10,6 +10,10 @@
   text-align: center;
 }
 
+.game-container .not-show {
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
   .game-fields-container {
     padding: 0;
