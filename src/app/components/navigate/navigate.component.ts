@@ -99,12 +99,12 @@ export class NavigateComponent implements OnInit, OnDestroy {
         }, BSModalContext));
       };
 
-      me.socket.addSingleListener(Constants.EVENTS.connectError, me.errorListener);
-      me.socket.addMultipleListener(Constants.EVENTS.connect, me.connectListener, "connectListenerFromNavigate");
-      me.socket.addSingleListener(Constants.EVENTS.userAdded, me.userAddedListener);
-      me.socket.addSingleListener(Constants.EVENTS.userAcceptedPlay, me.acceptedPLayListener);
-      me.socket.addSingleListener(Constants.EVENTS.gameStarted, me.gameStartedListener);
-      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, me.gameEndListener, "gameEndListenerFromNavigate");
+      me.socket.on(Constants.EVENTS.connectError, me.errorListener);
+      me.socket.on(Constants.EVENTS.connect, me.connectListener);
+      me.socket.on(Constants.EVENTS.userAdded, me.userAddedListener);
+      me.socket.on(Constants.EVENTS.userAcceptedPlay, me.acceptedPLayListener);
+      me.socket.on(Constants.EVENTS.gameStarted, me.gameStartedListener);
+      me.socket.on(Constants.EVENTS.gameEnd, me.gameEndListener);
     }
   }
 

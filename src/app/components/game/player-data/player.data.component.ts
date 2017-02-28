@@ -42,7 +42,7 @@ export class PlayerDataComponent implements OnInit, OnDestroy {
       }
     };
 
-    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, me.gameMarkedListener, "gameMarkedListenerFromPlayerData");
+    me.socket.on(Constants.EVENTS.gameMarked, me.gameMarkedListener);
   }
 
   ngOnDestroy(): void {

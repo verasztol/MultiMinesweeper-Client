@@ -9,10 +9,11 @@ import {SocketGuard} from "./services/guard.service";
 import {LoginGuard} from "./services/login.guard.service";
 import {PlayingGuard} from "./services/playing.guard.service";
 import {GameGuard} from "./services/game.guard.service";
+import {ErrorGuard} from "./services/error.guard.service";
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'connect-waiting',  component: ConnectWaitingComponent },
+  { path: 'connect-waiting',  component: ConnectWaitingComponent, canActivate: [ErrorGuard]},
   { path: 'login',  component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [SocketGuard] },
   { path: 'game',  component: GameComponent, canActivate: [GameGuard], canDeactivate: [PlayingGuard] }
@@ -24,7 +25,8 @@ const routes: Routes = [
     SocketGuard,
     LoginGuard,
     PlayingGuard,
-    GameGuard
+    GameGuard,
+    ErrorGuard
   ]
 })
 export class AppRoutingModule {}

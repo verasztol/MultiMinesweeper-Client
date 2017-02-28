@@ -52,9 +52,9 @@ export class PlayersComponent implements OnInit, OnDestroy {
         }
       };
 
-      me.socket.addSingleListener(Constants.EVENTS.userListed, me.userListedListener);
-      me.socket.addSingleListener(Constants.EVENTS.globalUserAdded, me.globalUserAddedListener);
-      me.socket.addSingleListener(Constants.EVENTS.globalUserLeft, me.userLeftListener);
+      me.socket.on(Constants.EVENTS.userListed, me.userListedListener);
+      me.socket.on(Constants.EVENTS.globalUserAdded, me.globalUserAddedListener);
+      me.socket.on(Constants.EVENTS.globalUserLeft, me.userLeftListener);
 
       me.refresh();
     }

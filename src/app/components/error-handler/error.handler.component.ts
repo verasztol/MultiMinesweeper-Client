@@ -52,8 +52,8 @@ export class ErrorHandlerComponent implements OnInit, OnDestroy {
         }
       };
 
-      me.socket.addSingleListener(Constants.EVENTS.userError, me.userErrorListener);
-      me.socket.addSingleListener(Constants.EVENTS.gameWarn, me.gameWarnListener);
+      me.socket.on(Constants.EVENTS.userError, me.userErrorListener);
+      me.socket.on(Constants.EVENTS.gameWarn, me.gameWarnListener);
     }
   }
 

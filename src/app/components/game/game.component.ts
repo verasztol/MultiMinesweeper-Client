@@ -68,8 +68,8 @@ export class GameComponent implements OnInit, OnDestroy {
         me.isEnded = true;
       };
 
-      me.socket.addMultipleListener(Constants.EVENTS.gameShooted, me.gameShootedListener, "gameShootedListenerFromGame");
-      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, me.gameEndListener, "gameEndListenerFromGame");
+      me.socket.on(Constants.EVENTS.gameShooted, me.gameShootedListener);
+      me.socket.on(Constants.EVENTS.gameEnd, me.gameEndListener);
     }
     else {
       // TODO

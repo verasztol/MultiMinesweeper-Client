@@ -90,9 +90,9 @@ export class FieldsComponent implements OnInit, OnDestroy {
       }
     };
 
-    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, me.markedListener, "gameMarkedListenerFromFields");
-    me.socket.addMultipleListener(Constants.EVENTS.gameShooted, me.shootedListener, "gameShootedListenerFromFields");
-    me.socket.addMultipleListener(Constants.EVENTS.gameEnd, me.endListener, "gameEndListenerFromFields");
+    me.socket.on(Constants.EVENTS.gameMarked, me.markedListener);
+    me.socket.on(Constants.EVENTS.gameShooted, me.shootedListener);
+    me.socket.on(Constants.EVENTS.gameEnd, me.endListener);
   }
 
   ngOnDestroy(): void {

@@ -31,7 +31,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
       }
     };
 
-    me.socket.addSingleListener(Constants.EVENTS.userDeclinedPlay, me.userDeclinedListener);
+    me.socket.on(Constants.EVENTS.userDeclinedPlay, me.userDeclinedListener);
   }
 
   ngOnDestroy(): void {

@@ -35,7 +35,7 @@ export class ChallengersComponent implements OnInit, OnDestroy {
       }
     };
 
-    me.socket.addSingleListener(Constants.EVENTS.userWantPlay, me.userWantPlayListener);
+    me.socket.on(Constants.EVENTS.userWantPlay, me.userWantPlayListener);
   }
 
   ngOnDestroy(): void {

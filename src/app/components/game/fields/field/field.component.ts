@@ -41,7 +41,7 @@ export class FieldComponent implements OnInit, OnChanges {
 
   handleMark(data) {
     let me = this;
-    console.log("handleMark", data, "x: " + me.x, "y: " + me.y);
+    // console.log("handleMark", data, "x: " + me.x, "y: " + me.y);
     if (data && data.x == me.x && data.y == me.y) {
       if(data.playerName === me.user.name) {
         me.isMarked = "../../../../../assets/blue.png";
@@ -59,12 +59,13 @@ export class FieldComponent implements OnInit, OnChanges {
 
   handleShoot(data) {
     let me = this;
-    console.log("handleShoot", data, "x: " + me.x, "y: " + me.y);
+    // console.log("handleShoot", data, "x: " + me.x, "y: " + me.y);
     if(data && data.x == me.x && data.y == me.y) {
       if(data.value >= 0) {
         me.value = data.value;
         me.isMarked = null;
-      }else {
+      }
+      else {
         me.isMarked = "../../../../../assets/logo_orig.png";
       }
       me.hasAction = true;
@@ -75,7 +76,7 @@ export class FieldComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("changes", changes);
+    // console.log("changes", changes);
     if(changes["lastMarked"]) {
       this.handleMark(changes["lastMarked"].currentValue);
     }
