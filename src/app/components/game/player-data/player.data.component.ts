@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {User} from "../../../models/user";
 import {Game} from "../../../models/game";
 import {SocketService} from "../../../services/socket.service";
@@ -9,8 +9,9 @@ import {Constants} from "../../../constants";
   templateUrl: './player.data.component.html',
   styleUrls: ['./player.data.component.css']
 })
-export class PlayerDataComponent implements OnInit {
-  private socket = null;
+export class PlayerDataComponent implements OnInit, OnDestroy {
+  private socket:any = null;
+  private gameMarkedListener: Function = null;
 
   name: string = null;
   maxMarker: number = null;
@@ -32,7 +33,7 @@ export class PlayerDataComponent implements OnInit {
 
     me.maxMarker = (me.game) ? me.game.maxMarker : null;
 
-    let gameMarkedListener = (data) => {
+    me.gameMarkedListener = (data) => {
       if (data && data.marked && data.marked.playerName === me.name) {
         me.marker = data.markerCount || 0;
       }
@@ -41,6 +42,10 @@ export class PlayerDataComponent implements OnInit {
       }
     };
 
-    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, gameMarkedListener, "gameMarkedListenerFromPlayerData");
+    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, me.gameMarkedListener, "gameMarkedListenerFromPlayerData");
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.removeListener(Constants.EVENTS.gameMarked, this.gameMarkedListener);
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
 import {Constants} from "../../../constants";
 
@@ -7,10 +7,14 @@ import {Constants} from "../../../constants";
   templateUrl: './players.component.html',
   styleUrls: ['./players.component.css']
 })
-export class PlayersComponent implements OnInit {
+export class PlayersComponent implements OnInit, OnDestroy {
 
-  private socket = null;
-  private notPlayingUsers = [];
+  private socket: any = null;
+  private notPlayingUsers: any = [];
+  private userListedListener: Function = null;
+  private globalUserAddedListener: Function = null;
+  private userLeftListener: Function = null;
+
   text = "There is no available player!";
 
   constructor(
@@ -24,13 +28,13 @@ export class PlayersComponent implements OnInit {
 
     if(me.socket) {
 
-      let userListedListener = (data) => {
+      me.userListedListener = (data) => {
         console.log("listed", data);
         me.notPlayingUsers = data;
         me.fixText(data);
       };
 
-      let globalUserAddedListener = (data) => {
+      me.globalUserAddedListener = (data) => {
         console.log("global user added", data);
         if (data && data.userName) {
           me.notPlayingUsers.push(data.userName);
@@ -38,7 +42,7 @@ export class PlayersComponent implements OnInit {
         }
       };
 
-      let userLeft = (data) => {
+      me.userLeftListener = (data) => {
         console.log("global user left", data);
         if (data && data.userName) {
           me.notPlayingUsers = me.notPlayingUsers.filter((item) => {
@@ -48,12 +52,18 @@ export class PlayersComponent implements OnInit {
         }
       };
 
-      me.socket.addSingleListener(Constants.EVENTS.userListed, userListedListener);
-      me.socket.addSingleListener(Constants.EVENTS.globalUserAdded, globalUserAddedListener);
-      me.socket.addSingleListener(Constants.EVENTS.globalUserLeft, userLeft);
+      me.socket.addSingleListener(Constants.EVENTS.userListed, me.userListedListener);
+      me.socket.addSingleListener(Constants.EVENTS.globalUserAdded, me.globalUserAddedListener);
+      me.socket.addSingleListener(Constants.EVENTS.globalUserLeft, me.userLeftListener);
 
       me.refresh();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.removeListener(Constants.EVENTS.userListed, this.userListedListener);
+    this.socketService.removeListener(Constants.EVENTS.globalUserAdded, this.globalUserAddedListener);
+    this.socketService.removeListener(Constants.EVENTS.globalUserLeft, this.userLeftListener);
   }
 
   fixText(data): void {

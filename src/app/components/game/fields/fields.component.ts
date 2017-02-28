@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
 import {Game} from "../../../models/game";
 import {Constants} from "../../../constants";
@@ -8,15 +8,18 @@ import {Constants} from "../../../constants";
   templateUrl: './fields.component.html',
   styleUrls: ['./fields.component.css']
 })
-export class FieldsComponent implements OnInit {
+export class FieldsComponent implements OnInit, OnDestroy {
 
-  private socket = null;
+  private socket: any = null;
   private width: number = null;
   private height: number = null;
   private row: any = [];
   private col: any = [];
   private lastShoots: any = [];
   private lastMarked: any = null;
+  private markedListener: Function = null;
+  private shootedListener: Function = null;
+  private endListener: Function = null;
 
   @Input() game: Game = null;
 
@@ -35,7 +38,7 @@ export class FieldsComponent implements OnInit {
       me.col = Array(me.height).fill(1).map((x,i)=>i);
     }
 
-    let markedListener = (data) => {
+    me.markedListener = (data) => {
       console.log("game marked", data);
 
       if (data && data.marked) {
@@ -46,7 +49,7 @@ export class FieldsComponent implements OnInit {
       }
     };
 
-    let shootedListener = (data) => {
+    me.shootedListener = (data) => {
       console.log("fields components", "game shooted", data);
 
       if (data && data.shooted && Array.isArray(data.shooted)) {
@@ -63,7 +66,7 @@ export class FieldsComponent implements OnInit {
       }
     };
 
-    let endListener = (data) => {
+    me.endListener = (data) => {
       console.log("game end", data);
 
       if (data && data.fields && Array.isArray(data.fields)) {
@@ -87,8 +90,14 @@ export class FieldsComponent implements OnInit {
       }
     };
 
-    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, markedListener, "gameMarkedListenerFromFields");
-    me.socket.addMultipleListener(Constants.EVENTS.gameShooted, shootedListener, "gameShootedListenerFromFields");
-    me.socket.addMultipleListener(Constants.EVENTS.gameEnd, endListener, "gameEndListenerFromFields");
+    me.socket.addMultipleListener(Constants.EVENTS.gameMarked, me.markedListener, "gameMarkedListenerFromFields");
+    me.socket.addMultipleListener(Constants.EVENTS.gameShooted, me.shootedListener, "gameShootedListenerFromFields");
+    me.socket.addMultipleListener(Constants.EVENTS.gameEnd, me.endListener, "gameEndListenerFromFields");
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.removeListener(Constants.EVENTS.gameMarked, this.markedListener);
+    this.socketService.removeListener(Constants.EVENTS.gameShooted, this.shootedListener);
+    this.socketService.removeListener(Constants.EVENTS.gameEnd, this.endListener);
   }
 }

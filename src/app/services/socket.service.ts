@@ -39,4 +39,10 @@ export class SocketService {
     }
     return this.socket;
   }
+
+  removeListener(key: string, listener: Function): void {
+    if(key && listener && this.socket) {
+      this.socket.removeListener(key, listener);
+    }
+  }
 }

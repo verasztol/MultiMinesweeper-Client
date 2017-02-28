@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {SocketService} from "../../services/socket.service";
 import {Constants} from "../../constants";
 
@@ -7,10 +7,13 @@ import {Constants} from "../../constants";
   templateUrl: './error.handler.component.html',
   styleUrls: ['./error.handler.component.css']
 })
-export class ErrorHandlerComponent implements OnInit{
+export class ErrorHandlerComponent implements OnInit, OnDestroy {
 
-  private socket = null;
-  private timer = null;
+  private socket: any = null;
+  private timer: any = null;
+  private userErrorListener: Function = null;
+  private gameWarnListener: Function = null;
+
   text: string = null;
 
   constructor(
@@ -23,7 +26,7 @@ export class ErrorHandlerComponent implements OnInit{
 
     if(me.socket) {
 
-      let userErrorListener = (data) => {
+      me.userErrorListener = (data) => {
         console.log("user error", data);
 
         if(me.timer) {
@@ -36,7 +39,7 @@ export class ErrorHandlerComponent implements OnInit{
         }
       };
 
-      let gameWarnListener = (data) => {
+      me.gameWarnListener = (data) => {
         console.log("game warn", data);
 
         if(me.timer) {
@@ -49,9 +52,14 @@ export class ErrorHandlerComponent implements OnInit{
         }
       };
 
-      me.socket.addSingleListener(Constants.EVENTS.userError, userErrorListener);
-      me.socket.addSingleListener(Constants.EVENTS.gameWarn, gameWarnListener);
+      me.socket.addSingleListener(Constants.EVENTS.userError, me.userErrorListener);
+      me.socket.addSingleListener(Constants.EVENTS.gameWarn, me.gameWarnListener);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.removeListener(Constants.EVENTS.userError, this.userErrorListener);
+    this.socketService.removeListener(Constants.EVENTS.gameWarn, this.gameWarnListener);
   }
 
   initTimer() {

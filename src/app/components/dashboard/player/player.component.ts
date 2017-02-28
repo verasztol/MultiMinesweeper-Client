@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
 import {Constants} from "../../../constants";
 
@@ -7,9 +7,11 @@ import {Constants} from "../../../constants";
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css']
 })
-export class PlayerComponent implements OnInit{
+export class PlayerComponent implements OnInit, OnDestroy {
 
-  private socket = null;
+  private socket: any = null;
+  private userDeclinedListener: Function = null;
+
   waiting: boolean = false;
 
   @Input() name:string = "";
@@ -22,14 +24,18 @@ export class PlayerComponent implements OnInit{
   ngOnInit(): void {
     let me = this;
 
-    let userDeclinedListener = (data) => {
+    me.userDeclinedListener = (data) => {
       console.log("user declinedPlay", data);
       if(data && data.enemyName === me.name) {
         me.waiting = false;
       }
     };
 
-    me.socket.addSingleListener(Constants.EVENTS.userDeclinedPlay, userDeclinedListener);
+    me.socket.addSingleListener(Constants.EVENTS.userDeclinedPlay, me.userDeclinedListener);
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.removeListener(Constants.EVENTS.userDeclinedPlay, this.userDeclinedListener);
   }
 
   select(): void {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {SocketService} from "../../services/socket.service";
 import {UserService} from "../../services/user.service";
 import {Game} from "../../models/game";
@@ -11,11 +11,14 @@ import {Constants} from "../../constants";
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
 
-  private socket = null;
-  private timer = null;
+  private socket: any = null;
+  private timer: any = null;
   private isPlayerChange: boolean = false;
+  private gameShootedListener: Function = null;
+  private gameEndListener: Function = null;
+
   nextPlayerName: string = null;
   game: Game = null;
   user: User = null;
@@ -44,7 +47,7 @@ export class GameComponent implements OnInit {
 
       me.mineCount = me.game.mineCount || 0;
 
-      let gameShootedListener = (data) => {
+      me.gameShootedListener = (data) => {
         console.log("game components", "game shooted", data);
 
         if(data && data.nextPlayerName) {
@@ -61,16 +64,21 @@ export class GameComponent implements OnInit {
         }
       };
 
-      let gameEndListener = (data) => {
+      me.gameEndListener = (data) => {
         me.isEnded = true;
       };
 
-      me.socket.addMultipleListener(Constants.EVENTS.gameShooted, gameShootedListener, "gameShootedListenerFromGame");
-      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, gameEndListener, "gameEndListenerFromGame");
+      me.socket.addMultipleListener(Constants.EVENTS.gameShooted, me.gameShootedListener, "gameShootedListenerFromGame");
+      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, me.gameEndListener, "gameEndListenerFromGame");
     }
     else {
       // TODO
     }
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.removeListener(Constants.EVENTS.gameShooted, this.gameShootedListener);
+    this.socketService.removeListener(Constants.EVENTS.gameEnd, this.gameEndListener);
   }
 
   canDeactivate(): Promise<boolean> | boolean {

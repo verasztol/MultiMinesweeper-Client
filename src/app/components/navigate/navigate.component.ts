@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Router} from "@angular/router";
 import {SocketService} from "../../services/socket.service";
 import {UserService} from "../../services/user.service";
@@ -12,9 +12,15 @@ import {Constants} from '../../constants';
   templateUrl: './navigate.component.html',
   providers: [Modal]
 })
-export class NavigateComponent implements OnInit {
+export class NavigateComponent implements OnInit, OnDestroy {
 
-  private socket = null;
+  private socket: any = null;
+  private errorListener: Function = null;
+  private connectListener: Function = null;
+  private userAddedListener: Function = null;
+  private acceptedPLayListener: Function = null;
+  private gameStartedListener: Function = null
+  private gameEndListener: Function = null;
 
   constructor(
     private router: Router,
@@ -29,17 +35,17 @@ export class NavigateComponent implements OnInit {
 
     if(me.socket) {
 
-      let errorListener = () => {
+      me.errorListener = () => {
         console.log("connect failed");
         me.gotoServerWaiting();
       };
 
-      let connectListener = () => {
+      me.connectListener = () => {
         console.log("client connected");
         me.goToLogin();
       };
 
-      let userAddedListener = (data) => {
+      me.userAddedListener = (data) => {
         console.log("added", data);
         if(data && data.name) {
           me.userService.createUser(data.name);
@@ -50,7 +56,7 @@ export class NavigateComponent implements OnInit {
         }
       };
 
-      let acceptedPLayListener = (data) => {
+      me.acceptedPLayListener = (data) => {
         console.log(Constants.EVENTS.userAcceptedPlay, data);
         if(data && data.enemyName) {
           me.userService.createOpponent(data.enemyName);
@@ -61,7 +67,7 @@ export class NavigateComponent implements OnInit {
         }
       };
 
-      let gameStartedListener = (data) => {
+      me.gameStartedListener = (data) => {
         console.log("game started", data);
 
         if(data && data.game && data.nextPlayerName) {
@@ -74,7 +80,7 @@ export class NavigateComponent implements OnInit {
         }
       };
 
-      let gameEndListener = (data) => {
+      me.gameEndListener = (data) => {
         console.log("end", data);
         me.userService.resetOpponent();
         console.log("reset", me.userService.getOpponent());
@@ -93,13 +99,22 @@ export class NavigateComponent implements OnInit {
         }, BSModalContext));
       };
 
-      me.socket.addSingleListener(Constants.EVENTS.connectError, errorListener);
-      me.socket.addMultipleListener(Constants.EVENTS.connect, connectListener, "connectListenerFromNavigate");
-      me.socket.addSingleListener(Constants.EVENTS.userAdded, userAddedListener);
-      me.socket.addSingleListener(Constants.EVENTS.userAcceptedPlay, acceptedPLayListener);
-      me.socket.addSingleListener(Constants.EVENTS.gameStarted, gameStartedListener);
-      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, gameEndListener, "gameEndListenerFromNavigate");
+      me.socket.addSingleListener(Constants.EVENTS.connectError, me.errorListener);
+      me.socket.addMultipleListener(Constants.EVENTS.connect, me.connectListener, "connectListenerFromNavigate");
+      me.socket.addSingleListener(Constants.EVENTS.userAdded, me.userAddedListener);
+      me.socket.addSingleListener(Constants.EVENTS.userAcceptedPlay, me.acceptedPLayListener);
+      me.socket.addSingleListener(Constants.EVENTS.gameStarted, me.gameStartedListener);
+      me.socket.addMultipleListener(Constants.EVENTS.gameEnd, me.gameEndListener, "gameEndListenerFromNavigate");
     }
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.removeListener(Constants.EVENTS.connectError, this.errorListener);
+    this.socketService.removeListener(Constants.EVENTS.connect, this.connectListener);
+    this.socketService.removeListener(Constants.EVENTS.userAdded, this.userAddedListener);
+    this.socketService.removeListener(Constants.EVENTS.userAcceptedPlay, this.acceptedPLayListener);
+    this.socketService.removeListener(Constants.EVENTS.gameStarted, this.gameStartedListener);
+    this.socketService.removeListener(Constants.EVENTS.gameEnd, this.gameEndListener);
   }
 
   goToLogin(): void {

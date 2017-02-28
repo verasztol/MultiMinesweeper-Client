@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {SocketService} from "../../../services/socket.service";
 import {UserService} from "../../../services/user.service";
 import {Constants} from "../../../constants";
@@ -8,10 +8,11 @@ import {Constants} from "../../../constants";
   templateUrl: './challengers.component.html',
   styleUrls: ['./challengers.component.css']
 })
-export class ChallengersComponent implements OnInit {
+export class ChallengersComponent implements OnInit, OnDestroy {
 
-  private socket = null;
-  private challengers = [];
+  private socket: any = null;
+  private challengers: any = [];
+  private userWantPlayListener: Function = null;
 
   constructor(
     private socketService: SocketService,
@@ -22,7 +23,7 @@ export class ChallengersComponent implements OnInit {
   ngOnInit(): void {
     let me = this;
 
-    let userWantPlayListener = (data) => {
+    me.userWantPlayListener = (data) => {
       console.log("user want play", data);
       if(data && data.challengerName) {
         if(me.challengers.indexOf(data.challengerName) === -1) {
@@ -34,7 +35,11 @@ export class ChallengersComponent implements OnInit {
       }
     };
 
-    me.socket.addSingleListener(Constants.EVENTS.userWantPlay, userWantPlayListener);
+    me.socket.addSingleListener(Constants.EVENTS.userWantPlay, me.userWantPlayListener);
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.removeListener(Constants.EVENTS.userWantPlay, this.userWantPlayListener);
   }
 
   accept(challenger): void {
