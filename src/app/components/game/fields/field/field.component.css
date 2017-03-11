@@ -12,7 +12,24 @@
   max-height: 100%;
 }
 
-.field-action {
+.field-container .half {
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.wrong-mark-opponent {
+  background-color: lightpink;
+}
+
+.wrong-mark-me {
+  background-color: lightblue;
+}
+
+.field-container.field-action {
   background-color: #bbbbbb;
   -webkit-animation:animatezoom 1s;
   animation:animatezoom 1s

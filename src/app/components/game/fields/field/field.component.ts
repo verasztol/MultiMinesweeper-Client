@@ -13,11 +13,13 @@ export class FieldComponent implements OnInit, OnChanges {
 
   private socket = null;
   private isMarked: string = null;
+  private isMarkedByMe: boolean = false;
   private user: User = null;
   private opponent: User = null;
   private timer = null;
   private isLongClick: boolean = false;
   private hasAction: boolean = false;
+  private wrongMark: string = "";
 
   value: (number | string) = null;
 
@@ -44,10 +46,12 @@ export class FieldComponent implements OnInit, OnChanges {
     // console.log("handleMark", data, "x: " + me.x, "y: " + me.y);
     if (data && data.x == me.x && data.y == me.y) {
       if(data.type === "unmark") {
+        me.isMarkedByMe = false;
         me.isMarked = null;
       }
       else {
         if (data.playerName === me.user.name) {
+          me.isMarkedByMe = true;
           me.isMarked = "../../../../../assets/blue.png";
         }
         else {
@@ -68,10 +72,28 @@ export class FieldComponent implements OnInit, OnChanges {
     if(data && data.x == me.x && data.y == me.y) {
       if(data.value >= 0) {
         me.value = data.value;
+        if(me.isMarked) {
+          if(me.isMarkedByMe) {
+            me.wrongMark = "wrong-mark-me";
+          }
+          else {
+            me.wrongMark = "wrong-mark-opponent";
+          }
+        }
         me.isMarked = null;
       }
       else {
-        me.isMarked = "../../../../../assets/logo_orig.png";
+        if(me.isMarked) {
+          if (me.isMarkedByMe) {
+            me.isMarked = "../../../../../assets/ok_blue.png";
+          }
+          else {
+            me.isMarked = "../../../../../assets/ok_red.png";
+          }
+        }
+        else {
+          me.isMarked = "../../../../../assets/logo_orig.png";
+        }
       }
       me.hasAction = true;
     }

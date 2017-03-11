@@ -1,5 +1,5 @@
 <div (contextmenu)="onFieldRightClick($event)" (click)="onClick()" (mousedown)="onClickDown()" [ngClass]="{'field-container': true, 'field-action': hasAction}">
-  <div *ngIf="!isMarked">
+  <div *ngIf="!isMarked" [ngClass]="['half', wrongMark]">
     {{value}}
   </div>
   <div *ngIf="isMarked">
