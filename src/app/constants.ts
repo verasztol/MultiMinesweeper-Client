@@ -37,7 +37,8 @@ const PAGES = {
 
 const GAME_END_TYPES = {
   bombFound: "bombFound",
-  userLeft: "userLeft"
+  userLeft: "userLeft",
+  allFieldChecked: "allFieldChecked"
 };
 
 export let Constants = {

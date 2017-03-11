@@ -88,7 +88,7 @@ export class NavigateComponent implements OnInit, OnDestroy {
         if(data.type === Constants.GAME_END_TYPES.userLeft) {
           title = "Your opponent left";
         }
-        else {
+        else if(data.type === Constants.GAME_END_TYPES.allFieldChecked) {
           title = "The table is done";
         }
         me.modal.open(CustomModalComponent,  overlayConfigFactory({

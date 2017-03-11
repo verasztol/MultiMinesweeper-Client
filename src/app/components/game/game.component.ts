@@ -66,8 +66,10 @@ export class GameComponent implements OnInit, OnDestroy {
 
       me.gameEndListener = (data) => {
         me.isEnded = true;
-        me.userScore = data.scores.myScore;
-        me.opponentScore = data.scores.opponentScore;
+        if(data.scores) {
+          me.userScore = data.scores.myScore;
+          me.opponentScore = data.scores.opponentScore;
+        }
       };
 
       me.socket.on(Constants.EVENTS.gameShooted, me.gameShootedListener);
