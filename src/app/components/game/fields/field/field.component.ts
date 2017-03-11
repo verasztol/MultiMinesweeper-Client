@@ -43,11 +43,16 @@ export class FieldComponent implements OnInit, OnChanges {
     let me = this;
     // console.log("handleMark", data, "x: " + me.x, "y: " + me.y);
     if (data && data.x == me.x && data.y == me.y) {
-      if(data.playerName === me.user.name) {
-        me.isMarked = "../../../../../assets/blue.png";
+      if(data.type === "unmark") {
+        me.isMarked = null;
       }
       else {
-        me.isMarked = "../../../../../assets/red.png";
+        if (data.playerName === me.user.name) {
+          me.isMarked = "../../../../../assets/blue.png";
+        }
+        else {
+          me.isMarked = "../../../../../assets/red.png";
+        }
       }
       me.hasAction = true;
     }

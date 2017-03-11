@@ -84,7 +84,13 @@ export class NavigateComponent implements OnInit, OnDestroy {
         console.log("end", data);
         me.userService.resetOpponent();
         console.log("reset", me.userService.getOpponent());
-        let title = (data.type === Constants.GAME_END_TYPES.userLeft) ? "Your opponent left" : "End game";
+        let title = "End game";
+        if(data.type === Constants.GAME_END_TYPES.userLeft) {
+          title = "Your opponent left";
+        }
+        else {
+          title = "The table is done";
+        }
         me.modal.open(CustomModalComponent,  overlayConfigFactory({
           title: title,
           text: "The winner is: " + data.winner,
