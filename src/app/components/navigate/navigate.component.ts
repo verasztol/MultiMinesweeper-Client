@@ -21,6 +21,7 @@ export class NavigateComponent implements OnInit, OnDestroy {
   private acceptedPLayListener: Function = null;
   private gameStartedListener: Function = null
   private gameEndListener: Function = null;
+  private audio: any = null;
 
   constructor(
     private router: Router,
@@ -28,6 +29,8 @@ export class NavigateComponent implements OnInit, OnDestroy {
     private userService: UserService,
     public modal: Modal) {
     this.socket = this.socketService.getSocket();
+    this.audio = new Audio();
+    this.audio.src = "../../assets/bomb.mp3";
   }
 
   ngOnInit(): void {
@@ -90,6 +93,9 @@ export class NavigateComponent implements OnInit, OnDestroy {
         }
         else if(data.type === Constants.GAME_END_TYPES.allFieldChecked) {
           title = "The table is done";
+        }
+        else if(data.type === Constants.GAME_END_TYPES.bombFound){
+          me.audio.play();
         }
         me.modal.open(CustomModalComponent,  overlayConfigFactory({
           title: title,
