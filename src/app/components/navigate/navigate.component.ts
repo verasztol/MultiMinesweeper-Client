@@ -19,7 +19,7 @@ export class NavigateComponent implements OnInit, OnDestroy {
   private connectListener: Function = null;
   private userAddedListener: Function = null;
   private acceptedPLayListener: Function = null;
-  private gameStartedListener: Function = null
+  private gameStartedListener: Function = null;
   private gameEndListener: Function = null;
   private audio: any = null;
 
